@@ -1,0 +1,149 @@
+﻿@model IEnumerable<ProductUI.Models.ProductModel>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <h2>Product Dashboard</h2>
+    </nav>
+</header>
+
+@{
+    if (TempData["insert_message"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Success</strong> @TempData["insert_message"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    if (TempData["update_message"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Success</strong> @TempData["update_message"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    if (TempData["delete_message"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Success</strong> @TempData["delete_message"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+}
+
+<div>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-1.13.6/b-2.4.2/r-2.5.0/sc-2.2.0/sb-1.5.0/sp-2.2.0/sl-1.7.0/datatables.min.css" rel="stylesheet">
+</div>
+
+<p>
+    <a class="btn btn-info mb-4" onclick="CommonPopup('@Url.Action("Create","Product",null,@Context.Request.Scheme)','Add New Product')">Add New Product</a>
+</p>
+
+@* <-----------------------------------------------------------------------------------------------------------------------------------------------------------*@
+
+<table class="Table" id="ProductTable" style="width:100%">
+    <thead class="table-active">
+        <tr>
+            @*  <th>
+            @Html.DisplayNameFor(model => model.Id)
+            </th> *@
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Image)
+            </th>
+
+            <th>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                @*  <td>
+            @Html.DisplayFor(modelItem => item.Id)
+            </td> *@
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    <img src="@Url.Content(item.Image)" alt="Product Image" height="30" width="100" />
+                </td>
+                <td>
+                    <a class="btn btn-info" onclick="CommonPopup('@Url.Action("Edit", "Product", new { id = item.Id })', 'Edit Product')">Edit</a>
+                    @* <a class="btn btn-primary" onclick="CommonPopup('@Url.Action("Details", "Product", new { id = item.Id })', ' Details of Product')">Details</a> *@
+                    <a class="btn btn-danger" onclick="CommonPopup('@Url.Action("Delete", "Product", new { id = item.Id })', ' Delete Product')">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@* <-----------------------------------------------------------------------------------------------------------------------------------------------------------*@
+
+<div class="modal fade" id="unique-modal" tabindex="-1" role="dialog" aria-labelledby="UniqueModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="custom-title" id="UniqueModalTitle">Custom Modal Title</h5>
+                <button type="button" class="CloseUniqueModel btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="custom-body">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#ProductTable').DataTable({
+            "scrolly": "150px",
+            "scrollCollapse": true,
+            "pagging": true,
+        });
+    });
+
+</script>
+@* <-----------------------------------------------------------------------------------------------------------------------------------------------------------*@
+
+
+
+
+
+
+
+
